@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nuestro tiempo juntos 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="day">
+
+  <audio id="musica" src="reik.mp3" loop></audio>
+
+
+  <div class="container">
+    <h1>💞 Nuestro tiempo juntos 💞</h1>
+    <p class="sub">Desde el <span id="fecha"></span></p>
+
+    <div class="contador">
+      <div><span id="anos"></span><p>Años</p></div>
+      <div><span id="meses"></span><p>Meses</p></div>
+      <div><span id="dias"></span><p>Días</p></div>
+      <div><span id="horas"></span><p>Horas</p></div>
+      <div><span id="minutos"></span><p>Minutos</p></div>
+      <div><span id="segundos"></span><p>Segundos</p></div>
+    </div>
+
+    <p class="mensaje">
+      💖 Y cada segundo con vos vale infinitamente la pena 💖
+    </p>
+
+    <button class="music-btn" onclick="toggleMusica()">🎵 Reproducir música</button>
+  </div>
+
+  <!-- corazones -->
+  <div class="hearts"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
