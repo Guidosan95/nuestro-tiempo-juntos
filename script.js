@@ -1,59 +1,124 @@
-const fechaInicio = new Date("2023-03-12T15:01:00");
-document.getElementById("fecha").textContent =
-  fechaInicio.toLocaleDateString("es-ES");
+document.addEventListener("DOMContentLoaded", function () {
 
-function actualizarContador() {
-  const ahora = new Date();
-  let diff = ahora - fechaInicio;
+  /* ==============================
+     📅 FECHA DE INICIO
+  ============================== */
 
-  const segundos = Math.floor(diff / 1000) % 60;
-  const minutos = Math.floor(diff / (1000 * 60)) % 60;
-  const horas = Math.floor(diff / (1000 * 60 * 60)) % 24;
-  const dias = Math.floor(diff / (1000 * 60 * 60 * 24)) % 30;
-  const meses = Math.floor(diff / (1000 * 60 * 60 * 24 * 30)) % 12;
-  const anos = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+  const fechaInicio = new Date("2023-03-12T15:01:00");
 
-  document.getElementById("anos").textContent = anos;
-  document.getElementById("meses").textContent = meses;
-  document.getElementById("dias").textContent = dias;
-  document.getElementById("horas").textContent = horas;
-  document.getElementById("minutos").textContent = minutos;
-  document.getElementById("segundos").textContent = segundos;
-}
+  // Mostrar fecha en formato 12/03/2023
+  const dia = String(fechaInicio.getDate()).padStart(2, "0");
+  const mes = String(fechaInicio.getMonth() + 1).padStart(2, "0");
+  const ano = fechaInicio.getFullYear();
 
-setInterval(actualizarContador, 1000);
-actualizarContador();
+  document.getElementById("fecha").textContent = `${dia}/${mes}/${ano}`;
 
-/* 🎵 Música */
-const musica = document.getElementById("musica");
-let sonando = false;
 
-function toggleMusica() {
-  if (sonando) {
-    musica.pause();
-  } else {
-    musica.play();
+  /* ==============================
+     ⏳ CONTADOR EXACTO
+  ============================== */
+
+  function actualizarContador() {
+    const ahora = new Date();
+
+    let anos = ahora.getFullYear() - fechaInicio.getFullYear();
+    let meses = ahora.getMonth() - fechaInicio.getMonth();
+    let dias = ahora.getDate() - fechaInicio.getDate();
+    let horas = ahora.getHours() - fechaInicio.getHours();
+    let minutos = ahora.getMinutes() - fechaInicio.getMinutes();
+    let segundos = ahora.getSeconds() - fechaInicio.getSeconds();
+
+    if (segundos < 0) {
+      segundos += 60;
+      minutos--;
+    }
+
+    if (minutos < 0) {
+      minutos += 60;
+      horas--;
+    }
+
+    if (horas < 0) {
+      horas += 24;
+      dias--;
+    }
+
+    if (dias < 0) {
+      const ultimoMes = new Date(
+        ahora.getFullYear(),
+        ahora.getMonth(),
+        0
+      ).getDate();
+      dias += ultimoMes;
+      meses--;
+    }
+
+    if (meses < 0) {
+      meses += 12;
+      anos--;
+    }
+
+    document.getElementById("anos").textContent = anos;
+    document.getElementById("meses").textContent = meses;
+    document.getElementById("dias").textContent = dias;
+    document.getElementById("horas").textContent = horas;
+    document.getElementById("minutos").textContent = minutos;
+    document.getElementById("segundos").textContent = segundos;
   }
-  sonando = !sonando;
-}
 
-/* 🌙 Modo día / noche */
-function toggleModo() {
-  document.body.classList.toggle("night");
-  document.body.classList.toggle("day");
-}
+  setInterval(actualizarContador, 1000);
+  actualizarContador();
 
-/* 💖 Corazones */
-const heartsContainer = document.querySelector(".hearts");
 
-setInterval(() => {
-  const heart = document.createElement("span");
-  heart.textContent = "💖";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-  heartsContainer.appendChild(heart);
+  /* ==============================
+     🎵 MÚSICA
+  ============================== */
 
-  setTimeout(() => {
-    heart.remove();
-  }, 6000);
-}, 300);
+  const musica = document.getElementById("musica");
+  let sonando = false;
+
+  window.toggleMusica = function () {
+    if (!musica) return;
+
+    if (sonando) {
+      musica.pause();
+    } else {
+      musica.play();
+    }
+    sonando = !sonando;
+  };
+
+
+  /* ==============================
+     🌙 MODO DÍA / NOCHE
+  ============================== */
+
+  window.toggleModo = function () {
+    document.body.classList.toggle("night");
+    document.body.classList.toggle("day");
+  };
+
+
+  /* ==============================
+     💖 CORAZONES
+  ============================== */
+
+  const heartsContainer = document.querySelector(".hearts");
+
+  if (heartsContainer) {
+    setInterval(() => {
+      const heart = document.createElement("span");
+      heart.textContent = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+      heart.style.position = "absolute";
+
+      heartsContainer.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 6000);
+    }, 300);
+  }
+
+});
